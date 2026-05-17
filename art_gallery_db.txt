@@ -1,0 +1,382 @@
+mysql> CREATE DATABASE IF NOT EXISTS art_gallery_db;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> 
+mysql> USE art_gallery_db;
+Database changed
+mysql> 
+mysql> CREATE TABLE Artists (
+    ->     artist_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     artist_name VARCHAR(100) NOT NULL,
+    ->     art_style VARCHAR(80),
+    ->     city VARCHAR(60)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> 
+mysql> CREATE TABLE Art_Categories (
+    ->     category_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     category_name VARCHAR(80) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> CREATE TABLE Artworks (
+    ->     artwork_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     artwork_title VARCHAR(150),
+    ->     price DECIMAL(10,2),
+    ->     created_year INT,
+    ->     availability_status VARCHAR(40),
+    ->     artist_id INT,
+    ->     category_id INT,
+    ->     FOREIGN KEY (artist_id) REFERENCES Artists(artist_id),
+    ->     FOREIGN KEY (category_id) REFERENCES Art_Categories(category_id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> 
+mysql> CREATE TABLE Collectors (
+    ->     collector_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     collector_name VARCHAR(100),
+    ->     email VARCHAR(100) UNIQUE,
+    ->     city VARCHAR(60),
+    ->     joined_date DATE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> 
+mysql> CREATE TABLE Exhibitions (
+    ->     exhibition_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     exhibition_name VARCHAR(120),
+    ->     exhibition_date DATE,
+    ->     location VARCHAR(80)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+mysql> CREATE TABLE Artwork_Sales (
+    ->     sale_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     artwork_id INT,
+    ->     collector_id INT,
+    ->     exhibition_id INT,
+    ->     sale_date DATE,
+    ->     sale_price DECIMAL(10,2),
+    ->     FOREIGN KEY (artwork_id) REFERENCES Artworks(artwork_id),
+    ->     FOREIGN KEY (collector_id) REFERENCES Collectors(collector_id),
+    ->     FOREIGN KEY (exhibition_id) REFERENCES Exhibitions(exhibition_id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Artists
+    -> (artist_name, art_style, city)
+    -> VALUES
+    -> ('Meera Varma', 'Watercolor', 'Vizag'),
+    -> ('Rohan Das', 'Abstract', 'Hyderabad'),
+    -> ('Kavya Nair', 'Portrait', 'Kochi'),
+    -> ('Arjun Rao', 'Landscape', 'Palasa');
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Art_Categories
+    -> (category_name)
+    -> VALUES
+    -> ('Nature Art'),
+    -> ('Modern Art'),
+    -> ('Portrait Art'),
+    -> ('Cultural Art');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Artworks
+    -> (artwork_title, price, created_year, availability_status, artist_id, category_id)
+    -> VALUES
+    -> ('Silent Valley', 12000.00, 2021, 'Sold', 1, 1),
+    -> ('Blue Thoughts', 18500.00, 2022, 'Available', 2, 2),
+    -> ('Village Smile', 9500.00, 2020, 'Sold', 3, 3),
+    -> ('Festival Lights', 22000.00, 2023, 'Available', 4, 4),
+    -> ('Rainy Evening', 15000.00, 2021, 'Sold', 1, 1),
+    -> ('Broken Lines', 27500.00, 2024, 'Available', 2, 2);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Collectors
+    -> (collector_name, email, city, joined_date)
+    -> VALUES
+    -> ('Sadika', 'sadika.art@gmail.com', 'Vizag', '2023-01-15'),
+    -> ('Vandhana', 'vandhana.art@yahoo.com', 'Hyderabad', '2023-03-20'),
+    -> ('Anu', 'anu.art@outlook.com', 'Palasa', '2023-05-10'),
+    -> ('Jhanavi', 'jhanavi.art@gmail.com', 'Kochi', '2023-07-18');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Exhibitions
+    -> (exhibition_name, exhibition_date, location)
+    -> VALUES
+    -> ('Colors of India', '2023-08-10', 'Vizag Art Hall'),
+    -> ('Modern Canvas Show', '2023-09-05', 'Hyderabad Gallery'),
+    -> ('Nature Frames', '2023-10-12', 'Kochi Art Center');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> INSERT INTO Artwork_Sales
+    -> (artwork_id, collector_id, exhibition_id, sale_date, sale_price)
+    -> VALUES
+    -> (1, 1, 1, '2023-08-10', 12000.00),
+    -> (3, 2, 2, '2023-09-05', 9500.00),
+    -> (5, 3, 3, '2023-10-12', 15000.00);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT*FROM Artists;
++-----------+-------------+------------+-----------+
+| artist_id | artist_name | art_style  | city      |
++-----------+-------------+------------+-----------+
+|         1 | Meera Varma | Watercolor | Vizag     |
+|         2 | Rohan Das   | Abstract   | Hyderabad |
+|         3 | Kavya Nair  | Portrait   | Kochi     |
+|         4 | Arjun Rao   | Landscape  | Palasa    |
++-----------+-------------+------------+-----------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT*FROM Art_Categories;
++-------------+---------------+
+| category_id | category_name |
++-------------+---------------+
+|           1 | Nature Art    |
+|           2 | Modern Art    |
+|           3 | Portrait Art  |
+|           4 | Cultural Art  |
++-------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT*FROM Artworks;
++------------+-----------------+----------+--------------+---------------------+-----------+-------------+
+| artwork_id | artwork_title   | price    | created_year | availability_status | artist_id | category_id |
++------------+-----------------+----------+--------------+---------------------+-----------+-------------+
+|          1 | Silent Valley   | 12000.00 |         2021 | Sold                |         1 |           1 |
+|          2 | Blue Thoughts   | 18500.00 |         2022 | Available           |         2 |           2 |
+|          3 | Village Smile   |  9500.00 |         2020 | Sold                |         3 |           3 |
+|          4 | Festival Lights | 22000.00 |         2023 | Available           |         4 |           4 |
+|          5 | Rainy Evening   | 15000.00 |         2021 | Sold                |         1 |           1 |
+|          6 | Broken Lines    | 27500.00 |         2024 | Available           |         2 |           2 |
++------------+-----------------+----------+--------------+---------------------+-----------+-------------+
+6 rows in set (0.01 sec)
+
+mysql> SELECT*FROM Collectors;
++--------------+----------------+------------------------+-----------+-------------+
+| collector_id | collector_name | email                  | city      | joined_date |
++--------------+----------------+------------------------+-----------+-------------+
+|            1 | Sadika         | sadika.art@gmail.com   | Vizag     | 2023-01-15  |
+|            2 | Vandhana       | vandhana.art@yahoo.com | Hyderabad | 2023-03-20  |
+|            3 | Anu            | anu.art@outlook.com    | Palasa    | 2023-05-10  |
+|            4 | Jhanavi        | jhanavi.art@gmail.com  | Kochi     | 2023-07-18  |
++--------------+----------------+------------------------+-----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT*FROM Exhibitions;
++---------------+--------------------+-----------------+-------------------+
+| exhibition_id | exhibition_name    | exhibition_date | location          |
++---------------+--------------------+-----------------+-------------------+
+|             1 | Colors of India    | 2023-08-10      | Vizag Art Hall    |
+|             2 | Modern Canvas Show | 2023-09-05      | Hyderabad Gallery |
+|             3 | Nature Frames      | 2023-10-12      | Kochi Art Center  |
++---------------+--------------------+-----------------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT*FROM Artwork_Sales;
++---------+------------+--------------+---------------+------------+------------+
+| sale_id | artwork_id | collector_id | exhibition_id | sale_date  | sale_price |
++---------+------------+--------------+---------------+------------+------------+
+|       1 |          1 |            1 |             1 | 2023-08-10 |   12000.00 |
+|       2 |          3 |            2 |             2 | 2023-09-05 |    9500.00 |
+|       3 |          5 |            3 |             3 | 2023-10-12 |   15000.00 |
++---------+------------+--------------+---------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Q1. SHOW ARTWORKS WITH PRICE BETWEEN 10000 AND 20000
+mysql> SELECT ARTWORK_TITLE, PRICE
+    -> FROM ARTWORKS
+    -> WHERE PRICE BETWEEN 10000 AND 20000;
++---------------+----------+
+| ARTWORK_TITLE | PRICE    |
++---------------+----------+
+| Silent Valley | 12000.00 |
+| Blue Thoughts | 18500.00 |
+| Rainy Evening | 15000.00 |
++---------------+----------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> -- Q2. SHOW COLLECTORS FROM VIZAG OR PALASA
+mysql> SELECT COLLECTOR_NAME, CITY, EMAIL
+    -> FROM COLLECTORS
+    -> WHERE CITY IN ('Vizag', 'Palasa');
++----------------+--------+----------------------+
+| COLLECTOR_NAME | CITY   | EMAIL                |
++----------------+--------+----------------------+
+| Sadika         | Vizag  | sadika.art@gmail.com |
+| Anu            | Palasa | anu.art@outlook.com  |
++----------------+--------+----------------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q3. SHOW ARTWORKS CREATED AFTER 2021
+mysql> SELECT ARTWORK_TITLE, CREATED_YEAR
+    -> FROM ARTWORKS
+    -> WHERE CREATED_YEAR > 2021;
++-----------------+--------------+
+| ARTWORK_TITLE   | CREATED_YEAR |
++-----------------+--------------+
+| Blue Thoughts   |         2022 |
+| Festival Lights |         2023 |
+| Broken Lines    |         2024 |
++-----------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q4. SHOW AVAILABLE ARTWORKS
+mysql> SELECT ARTWORK_TITLE, PRICE, AVAILABILITY_STATUS
+    -> FROM ARTWORKS
+    -> WHERE AVAILABILITY_STATUS = 'Available';
++-----------------+----------+---------------------+
+| ARTWORK_TITLE   | PRICE    | AVAILABILITY_STATUS |
++-----------------+----------+---------------------+
+| Blue Thoughts   | 18500.00 | Available           |
+| Festival Lights | 22000.00 | Available           |
+| Broken Lines    | 27500.00 | Available           |
++-----------------+----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Q1. FIND TOTAL ARTWORKS IN EACH CATEGORY
+mysql> SELECT ART_CATEGORIES.CATEGORY_NAME, COUNT(ARTWORKS.ARTWORK_ID) AS TOTAL_ARTWORKS
+    -> FROM ART_CATEGORIES
+    -> JOIN ARTWORKS
+    -> ON ART_CATEGORIES.CATEGORY_ID = ARTWORKS.CATEGORY_ID
+    -> GROUP BY ART_CATEGORIES.CATEGORY_NAME;
++---------------+----------------+
+| CATEGORY_NAME | TOTAL_ARTWORKS |
++---------------+----------------+
+| Nature Art    |              2 |
+| Modern Art    |              2 |
+| Portrait Art  |              1 |
+| Cultural Art  |              1 |
++---------------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> 
+mysql> -- Q2. FIND AVERAGE ARTWORK PRICE FOR EACH ARTIST
+mysql> SELECT ARTISTS.ARTIST_NAME, AVG(ARTWORKS.PRICE) AS AVERAGE_PRICE
+    -> FROM ARTISTS
+    -> JOIN ARTWORKS
+    -> ON ARTISTS.ARTIST_ID = ARTWORKS.ARTIST_ID
+    -> GROUP BY ARTISTS.ARTIST_NAME;
++-------------+---------------+
+| ARTIST_NAME | AVERAGE_PRICE |
++-------------+---------------+
+| Meera Varma |  13500.000000 |
+| Rohan Das   |  23000.000000 |
+| Kavya Nair  |   9500.000000 |
+| Arjun Rao   |  22000.000000 |
++-------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q3. FIND TOTAL SALES AMOUNT FOR EACH EXHIBITION
+mysql> SELECT EXHIBITIONS.EXHIBITION_NAME, SUM(ARTWORK_SALES.SALE_PRICE) AS TOTAL_SALES
+    -> FROM EXHIBITIONS
+    -> JOIN ARTWORK_SALES
+    -> ON EXHIBITIONS.EXHIBITION_ID = ARTWORK_SALES.EXHIBITION_ID
+    -> GROUP BY EXHIBITIONS.EXHIBITION_NAME;
++--------------------+-------------+
+| EXHIBITION_NAME    | TOTAL_SALES |
++--------------------+-------------+
+| Colors of India    |    12000.00 |
+| Modern Canvas Show |     9500.00 |
+| Nature Frames      |    15000.00 |
++--------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q4. SHOW CITIES HAVING MORE THAN ONE COLLECTOR
+mysql> SELECT CITY, COUNT(COLLECTOR_ID) AS TOTAL_COLLECTORS
+    -> FROM COLLECTORS
+    -> GROUP BY CITY
+    -> HAVING COUNT(COLLECTOR_ID) >= 1;
++-----------+------------------+
+| CITY      | TOTAL_COLLECTORS |
++-----------+------------------+
+| Vizag     |                1 |
+| Hyderabad |                1 |
+| Palasa    |                1 |
+| Kochi     |                1 |
++-----------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> -- Q1. SHOW COLLECTOR NAME, ARTWORK TITLE, AND SALE PRICE
+mysql> SELECT COLLECTORS.COLLECTOR_NAME, ARTWORKS.ARTWORK_TITLE, ARTWORK_SALES.SALE_PRICE
+    -> FROM COLLECTORS
+    -> JOIN ARTWORK_SALES
+    -> ON COLLECTORS.COLLECTOR_ID = ARTWORK_SALES.COLLECTOR_ID
+    -> JOIN ARTWORKS
+    -> ON ARTWORK_SALES.ARTWORK_ID = ARTWORKS.ARTWORK_ID;
++----------------+---------------+------------+
+| COLLECTOR_NAME | ARTWORK_TITLE | SALE_PRICE |
++----------------+---------------+------------+
+| Sadika         | Silent Valley |   12000.00 |
+| Vandhana       | Village Smile |    9500.00 |
+| Anu            | Rainy Evening |   15000.00 |
++----------------+---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q2. SHOW ARTWORKS WHOSE PRICE IS GREATER THAN AVERAGE ARTWORK PRICE
+mysql> SELECT ARTWORK_TITLE, PRICE
+    -> FROM ARTWORKS
+    -> WHERE PRICE > ( SELECT AVG(PRICE) FROM ARTWORKS); 
++-----------------+----------+
+| ARTWORK_TITLE   | PRICE    |
++-----------------+----------+
+| Blue Thoughts   | 18500.00 |
+| Festival Lights | 22000.00 |
+| Broken Lines    | 27500.00 |
++-----------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> -- Q3. SHOW ARTISTS WHO CREATED SOLD ARTWORKS
+mysql> SELECT DISTINCT ARTISTS.ARTIST_NAME, ARTWORKS.ARTWORK_TITLE
+    -> FROM ARTISTS
+    -> JOIN ARTWORKS
+    -> ON ARTISTS.ARTIST_ID = ARTWORKS.ARTIST_ID
+    -> WHERE ARTWORKS.ARTWORK_ID IN (
+    -> SELECT ARTWORK_ID FROM ARTWORK_SALES ); 
++-------------+---------------+
+| ARTIST_NAME | ARTWORK_TITLE |
++-------------+---------------+
+| Meera Varma | Rainy Evening |
+| Meera Varma | Silent Valley |
+| Kavya Nair  | Village Smile |
++-------------+---------------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> -- Q4. SHOW COLLECTORS WHO BOUGHT ARTWORKS ABOVE AVERAGE SALE PRICE
+mysql> SELECT DISTINCT COLLECTORS.COLLECTOR_NAME, ARTWORKS.ARTWORK_TITLE, ARTWORK_SALES.SALE_PRICE
+    -> FROM COLLECTORS
+    -> JOIN ARTWORK_SALES
+    -> ON COLLECTORS.COLLECTOR_ID = ARTWORK_SALES.COLLECTOR_ID
+    -> JOIN ARTWORKS
+    -> ON ARTWORK_SALES.ARTWORK_ID = ARTWORKS.ARTWORK_ID
+    -> WHERE ARTWORK_SALES.SALE_PRICE > ( SELECT AVG(SALE_PRICE) FROM ARTWORK_SALES);
++----------------+---------------+------------+
+| COLLECTOR_NAME | ARTWORK_TITLE | SALE_PRICE |
++----------------+---------------+------------+
+| Anu            | Rainy Evening |   15000.00 |
++----------------+---------------+------------+
+1 row in set (0.00 sec)
+
