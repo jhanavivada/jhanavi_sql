@@ -1,7 +1,6 @@
 mysql> CREATE DATABASE IF NOT EXISTS art_gallery_db;
 Query OK, 1 row affected (0.10 sec)
 
-mysql> 
 mysql> USE art_gallery_db;
 Database changed
 mysql> 
@@ -13,14 +12,12 @@ mysql> CREATE TABLE Artists (
     -> );
 Query OK, 0 rows affected (0.07 sec)
 
-mysql> 
 mysql> CREATE TABLE Art_Categories (
     ->     category_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     category_name VARCHAR(80) NOT NULL
     -> );
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> 
 mysql> CREATE TABLE Artworks (
     ->     artwork_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     artwork_title VARCHAR(150),
@@ -34,7 +31,6 @@ mysql> CREATE TABLE Artworks (
     -> );
 Query OK, 0 rows affected (0.05 sec)
 
-mysql> 
 mysql> CREATE TABLE Collectors (
     ->     collector_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     collector_name VARCHAR(100),
@@ -44,7 +40,6 @@ mysql> CREATE TABLE Collectors (
     -> );
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> 
 mysql> CREATE TABLE Exhibitions (
     ->     exhibition_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     exhibition_name VARCHAR(120),
@@ -53,7 +48,6 @@ mysql> CREATE TABLE Exhibitions (
     -> );
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> 
 mysql> CREATE TABLE Artwork_Sales (
     ->     sale_id INT AUTO_INCREMENT PRIMARY KEY,
     ->     artwork_id INT,
@@ -77,7 +71,6 @@ mysql> INSERT INTO Artists
 Query OK, 4 rows affected (0.03 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> 
 mysql> INSERT INTO Art_Categories
     -> (category_name)
     -> VALUES
@@ -88,7 +81,6 @@ mysql> INSERT INTO Art_Categories
 Query OK, 4 rows affected (0.01 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> 
 mysql> INSERT INTO Artworks
     -> (artwork_title, price, created_year, availability_status, artist_id, category_id)
     -> VALUES
@@ -101,7 +93,6 @@ mysql> INSERT INTO Artworks
 Query OK, 6 rows affected (0.01 sec)
 Records: 6  Duplicates: 0  Warnings: 0
 
-mysql> 
 mysql> INSERT INTO Collectors
     -> (collector_name, email, city, joined_date)
     -> VALUES
@@ -112,7 +103,6 @@ mysql> INSERT INTO Collectors
 Query OK, 4 rows affected (0.01 sec)
 Records: 4  Duplicates: 0  Warnings: 0
 
-mysql> 
 mysql> INSERT INTO Exhibitions
     -> (exhibition_name, exhibition_date, location)
     -> VALUES
@@ -122,7 +112,6 @@ mysql> INSERT INTO Exhibitions
 Query OK, 3 rows affected (0.01 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql> 
 mysql> INSERT INTO Artwork_Sales
     -> (artwork_id, collector_id, exhibition_id, sale_date, sale_price)
     -> VALUES
@@ -198,6 +187,8 @@ mysql> SELECT*FROM Artwork_Sales;
 +---------+------------+--------------+---------------+------------+------------+
 3 rows in set (0.00 sec)
 
+EASY — WHERE CLAUSE AND OPERATORS:-
+
 mysql> -- Q1. SHOW ARTWORKS WITH PRICE BETWEEN 10000 AND 20000
 mysql> SELECT ARTWORK_TITLE, PRICE
     -> FROM ARTWORKS
@@ -211,7 +202,6 @@ mysql> SELECT ARTWORK_TITLE, PRICE
 +---------------+----------+
 3 rows in set (0.01 sec)
 
-mysql> 
 mysql> -- Q2. SHOW COLLECTORS FROM VIZAG OR PALASA
 mysql> SELECT COLLECTOR_NAME, CITY, EMAIL
     -> FROM COLLECTORS
@@ -224,7 +214,6 @@ mysql> SELECT COLLECTOR_NAME, CITY, EMAIL
 +----------------+--------+----------------------+
 2 rows in set (0.00 sec)
 
-mysql> 
 mysql> -- Q3. SHOW ARTWORKS CREATED AFTER 2021
 mysql> SELECT ARTWORK_TITLE, CREATED_YEAR
     -> FROM ARTWORKS
@@ -238,7 +227,6 @@ mysql> SELECT ARTWORK_TITLE, CREATED_YEAR
 +-----------------+--------------+
 3 rows in set (0.00 sec)
 
-mysql> 
 mysql> -- Q4. SHOW AVAILABLE ARTWORKS
 mysql> SELECT ARTWORK_TITLE, PRICE, AVAILABILITY_STATUS
     -> FROM ARTWORKS
@@ -251,6 +239,8 @@ mysql> SELECT ARTWORK_TITLE, PRICE, AVAILABILITY_STATUS
 | Broken Lines    | 27500.00 | Available           |
 +-----------------+----------+---------------------+
 3 rows in set (0.00 sec)
+
+INTERMEDIATE — CLAUSES AND AGGREGATE FUNCTIONS:-
 
 mysql> -- Q1. FIND TOTAL ARTWORKS IN EACH CATEGORY
 mysql> SELECT ART_CATEGORIES.CATEGORY_NAME, COUNT(ARTWORKS.ARTWORK_ID) AS TOTAL_ARTWORKS
@@ -316,6 +306,8 @@ mysql> SELECT CITY, COUNT(COLLECTOR_ID) AS TOTAL_COLLECTORS
 | Kochi     |                1 |
 +-----------+------------------+
 4 rows in set (0.00 sec)
+
+HARD — JOINS AND SUBQUERIES:-
 
 mysql> -- Q1. SHOW COLLECTOR NAME, ARTWORK TITLE, AND SALE PRICE
 mysql> SELECT COLLECTORS.COLLECTOR_NAME, ARTWORKS.ARTWORK_TITLE, ARTWORK_SALES.SALE_PRICE
